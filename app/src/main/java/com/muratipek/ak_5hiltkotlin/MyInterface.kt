@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 interface MyInterface {
@@ -27,9 +28,17 @@ abstract class MyModule{
 @InstallIn(SingletonComponent::class)
 @Module
 class MyModule{
+    @FirstImplementer
     @Singleton
     @Provides
     fun providerFunction() : MyInterface{
+        return InterfaceImplementer()
+    }
+
+    @SecondImplementer
+    @Singleton
+    @Provides
+    fun secondProviderFunction() : MyInterface{
         return InterfaceImplementer()
     }
     @Singleton
@@ -38,3 +47,10 @@ class MyModule{
         return Gson()
     }
 }
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class  FirstImplementer
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class  SecondImplementer
